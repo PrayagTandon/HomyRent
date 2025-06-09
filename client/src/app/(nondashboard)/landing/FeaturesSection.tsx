@@ -41,7 +41,25 @@ const FeaturesSection = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 xl:gap-16">
                 {[0,1,2].map((index) => (
                     <motion.div key={index} variants={itemVariants}>
-
+                        <FeatureCard 
+                            imageSrc={`/landing-search${3 - index}.png`}
+                            title={
+                                [
+                                    "Trustworthy and Verified Listings",
+                                    "Browse Rental Listings with Ease",
+                                    "Simplify Your Rental Search with Advanced"
+                                ][index]
+                            }
+                            description={
+                                [
+                                    "Discover the best rental options with user reviews and ratings.",
+                                    "Get access to user reviews and ratings for a better understanding of rental options.",
+                                    "Find trustworthy and verified rental listings to ensure a hassle-free experience."
+                                ][index]
+                            }
+                            linkText={["Explore", "Search", "Discover"][index]}
+                            linkHref={["/explore", "/search", "discover"][index]}
+                        />
                     </motion.div>
                 ))}
             </div>
