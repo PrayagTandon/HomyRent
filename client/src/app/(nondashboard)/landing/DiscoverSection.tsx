@@ -6,12 +6,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const containerVariants = {
-    hidden: { opacity: 0, y: 50},
+    hidden: { opacity: 0},
     visible: { 
         opacity: 1,
-        y: 0,
         transition: {
-            duration: 0.5,
             staggerChildren: 0.2,
         },
     },
@@ -27,7 +25,7 @@ const DiscoverSection = () => {
     <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{once: true}}
+        viewport={{once: true, amount: 0.8}}
         variants={containerVariants}
         className=" py-24 px-6 sm:px-8 lg:px-12 xl:px-16 bg-white"
     >
