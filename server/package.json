@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rimraf dist && npx tsc",
+    "start": "npm run build && node dist/index.js",
+    "dev": "npm run build && concurrently \"npx tsc -w\" \"nodemon --exec ts-node src/index.ts\"",
+    "seed": "ts-node prisma/seed.ts",
+    "prisma:generate": "prisma generate",
+    "postprisma:generate": "shx cp -r node_modules/.prisma/client/index.ts ../client/src/types/prismaTypes.d.ts"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +17,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.826.0",
     "@aws-sdk/lib-storage": "^3.826.0",
+    "@prisma/client": "^6.9.0",
     "@terraformer/wkt": "^2.2.1",
     "axios": "^1.9.0",
     "body-parser": "^2.2.0",
@@ -22,6 +28,7 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "multer": "^2.0.1",
+    "prisma": "^6.9.0",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
