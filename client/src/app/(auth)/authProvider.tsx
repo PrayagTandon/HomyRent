@@ -1,8 +1,10 @@
 import React from 'react';
 import { Amplify } from 'aws-amplify';
 
-import { Authenticator } from '@aws-amplify/ui-react';
+import { Authenticator, Heading, useAuthenticator, View } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
+import { FormField } from '@/components/ui/form';
+import { signIn, signUp } from 'aws-amplify/auth';
 
 /* https://docs.amplify.aws/gen1/javascript/tools/libraries/configure-categories/ -> COntains the information to connect AWS Cognito with Amplify */
 
@@ -15,12 +17,95 @@ Amplify.configure({
     }
 });
 
-export default function App() {
+const components = {
+    Header() {
+        return (
+            <View className="mt-4 mb-7">
+                <Heading level={3} className="!text-2xl !font-bold">
+                    HOMY
+                    <span className="text-secondary-500 font-light hover:!text-primar-300">RENT</span>
+                </Heading>
+                <p className="text-muted-foreground mt-2">
+                    <span className="font-bold">Welcome!</span> Please Sign in to Continue
+                </p>
+            </View>
+        );
+    },
+
+    SignIn: {
+        Footer() {
+            const { toSignUp } = useAuthenticator();
+            return (
+                <View className="text-center mt-4">
+                    <p className="text-muted-foreground">
+                        Don&apos;t have an account?{" "}
+                        <button
+                            onClick={toSignUp} 
+                            className="text-primary hover:underline bg-transparent border-none p-0"
+                            >
+                            Sign up here
+                        </button>
+                    </p>
+                </View>
+            );
+        },
+    },
+};
+
+const formFields = {
+    signIn: {
+        username: {
+            order: 1,
+            placeholder: "Enter your email",
+            label: "Email",
+            isRequired: true
+        },
+        password: {
+            placeholder: "Enter your password",
+            label: "Password",
+            isRequired: true
+        }
+    },
+    signUp: {
+        username: {
+            order: 1,
+            placeholder: "Enter your username",
+            label: "Username",
+            isRequired: true
+        },
+        email: {
+            order: 2,
+            placeholder: "Enter your email",
+            label: "Email",
+            isRequired: true
+        },
+        password: {
+            order: 3,
+            placeholder: "Create your password",
+            label: "Password",
+            isRequired: true
+        },
+        confirm_password: {
+            order: 4,
+            placeholder: "Create your password",
+            label: "Confirm Password",
+            isRequired: true
+        },
+    },
+};
+
+const Auth = ({children}: {children: React.ReactNode}) => {
+  const { user } = useAuthenticator((context) => [context.user]);  
   return (
     <div className="h-full">
-        <Authenticator>
-            {() => }      
+        <Authenticator
+            components={components}
+            formFields={formFields}
+        >
+            {() => <>{children}</>}      
         </Authenticator>
     </div>
   );
-}
+};
+
+export default Auth;
