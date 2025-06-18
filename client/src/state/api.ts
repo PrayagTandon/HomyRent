@@ -5,6 +5,14 @@ import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth";
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
+    prepareHeaders: async (headers) => {
+      const session = await fetchAuthSession();
+      const { idToken } = session.tokens ?? {};
+      if (idToken) {
+        headers.set("Authorization", `Bearer${idToken}`)
+      }
+      return headers;
+    }
   }),
   reducerPath: "api",
   tagTypes: [],
@@ -36,8 +44,8 @@ export const api = createApi({
         } catch(error: any) {
           return {error: error.message || "Couldn't retrieve User information"}
         }
-      }
-    })
+      },
+    }),
 
   }),
 });
@@ -52,4 +60,14 @@ export const {} = api;
     (alias) fetchAuthSession(options?: FetchAuthSessionOptions): Promise<AuthSession>
   import fetchAuthSession
   Fetch the auth session including the tokens and credentials if they are available. By default it does not refresh the auth tokens or credentials if they are loaded in storage already. You can force a refresh with { forceRefresh: true } input.
+
+  3. prepareHeaders: async (headers) => {
+      const session = await fetchAuthSession();
+      const { idToken } = session.tokens ?? {};
+      if (idToken) {
+        headers.set("Authorization", `Bearer${idToken}`)
+      }
+      return headers;
+    }
+      This lines of code helps to setup the headers for every api calls
 */
