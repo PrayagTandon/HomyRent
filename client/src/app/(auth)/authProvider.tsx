@@ -144,6 +144,7 @@ const Auth = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
 
+/* Regex used to check if the route is SignIn or SignUp */
   const isAuthPage = pathname.match(/^\/(signin|signup)$/);
   const isDashboardPage =
     pathname.startsWith("/manager") || pathname.startsWith("/tenants");
