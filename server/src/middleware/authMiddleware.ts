@@ -43,5 +43,7 @@ export const authMiddleware = (allowedRoles: string[]) => {
             console.error(`Failed to decode token: ${error}`);
             res.status(400).json({ message: "Invalid token" })
         }
+
+        next();
     }
 }
